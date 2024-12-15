@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 const h = window.innerHeight;
 const w = window.innerWidth;
@@ -13,7 +14,9 @@ const far = 10;
 const camerra = new THREE.PerspectiveCamera(fov, asratio, near, far);
 camerra.position.z = 2;
 const scene = new THREE.Scene();
-
+const controls = new OrbitControls(camerra, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.04;
 const geo = new THREE.IcosahedronGeometry(1.0, 2);
 const mat = new THREE.MeshStandardMaterial({
   color: "rgb(255, 255, 255)",
@@ -39,9 +42,10 @@ scene.add(hemilight);
 
 function animate(t = 0) {
   requestAnimationFrame(animate);
-  
+
   mesh.rotation.y += 0.01;
   renderer.render(scene, camerra);
+  controls.update();
 }
 
 animate();
